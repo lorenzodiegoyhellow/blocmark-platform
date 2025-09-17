@@ -14,8 +14,6 @@ build:
       - test -d dist && test -f dist/index.js
       - echo "Build completed successfully - ready for deployment"
   env:
-    - name: NODE_ENV
-      value: production
     - name: CI
       value: "true"
     - name: NPM_CONFIG_UPDATE_NOTIFIER
