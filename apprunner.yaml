@@ -4,9 +4,7 @@ build:
   commands:
     pre-build:
       - echo "Installing dependencies including devDependencies..."
-      - NPM_CONFIG_PRODUCTION=false npm ci
-      - echo "Rebuilding esbuild for correct platform..."
-      - npm rebuild esbuild
+      - npm install --include=dev
       - echo "Dependencies installed successfully"
     build:
       - echo "Building frontend with Vite..."
