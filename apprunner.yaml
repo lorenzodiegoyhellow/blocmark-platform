@@ -4,13 +4,15 @@ build:
   commands:
     pre-build:
       - echo "Installing dependencies including devDependencies..."
-      - npm ci --production=false
+      - NPM_CONFIG_PRODUCTION=false npm ci
+      - echo "Dependencies installed successfully"
     build:
-      - echo "Building frontend with Vite..."
+      - echo "Building application with strict error checking..."
       - npm run build
     post-build:
-      - echo "Build completed successfully!"
-      - ls -la dist/
+      - echo "Verifying build artifacts..."
+      - test -d dist && test -f dist/index.js
+      - echo "Build completed successfully - ready for deployment"
   env:
     - name: NODE_ENV
       value: production
