@@ -1507,13 +1507,6 @@ export class DatabaseStorage implements IStorage {
     return requirements.length === 0;
   }
 
-  async sendReviewReminders(): Promise<number> {
-    // This would send reminders to users who have pending reviews
-    // For now, just return 0 as no reminders sent
-    console.log("Review reminders would be sent here");
-    return 0;
-  }
-  
   /**
    * Sends review reminder notifications to users who have completed bookings but haven't left reviews yet
    */
@@ -4019,46 +4012,7 @@ export class DatabaseStorage implements IStorage {
 
 
 
-  async getSupportEmail(id: number): Promise<SupportEmail | undefined> {
-    const [supportEmail] = await db.select().from(supportEmails).where(eq(supportEmails.id, id));
-    return supportEmail;
-  }
-
-  async getAllSupportEmails(): Promise<SupportEmail[]> {
-    return db.select().from(supportEmails).orderBy(desc(supportEmails.createdAt));
-  }
-
-  async getSupportEmailsByStatus(status: "open" | "in_progress" | "resolved" | "closed"): Promise<SupportEmail[]> {
-    return db
-      .select()
-      .from(supportEmails)
-      .where(eq(supportEmails.status, status))
-      .orderBy(desc(supportEmails.createdAt));
-  }
-
-  async updateSupportEmail(id: number, updateData: Partial<SupportEmail>): Promise<SupportEmail> {
-    // Always update the updatedAt timestamp
-    const dataWithTimestamp = {
-      ...updateData,
-      updatedAt: new Date()
-    };
-    
-    const [updated] = await db
-      .update(supportEmails)
-      .set(dataWithTimestamp)
-      .where(eq(supportEmails.id, id))
-      .returning();
-    
-    if (!updated) {
-      throw new Error("Support email not found");
-    }
-    
-    return updated;
-  }
-
-  async deleteSupportEmail(id: number): Promise<void> {
-    await db.delete(supportEmails).where(eq(supportEmails.id, id));
-  }
+  // Duplicate support email methods removed - implementations exist earlier in file
 
   // Forum Categories
   async getForumCategories(): Promise<ForumCategory[]> {
