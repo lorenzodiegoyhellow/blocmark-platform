@@ -5,17 +5,19 @@ build:
     pre-build:
       - echo "Installing dependencies including devDependencies..."
       - NPM_CONFIG_PRODUCTION=false npm ci
+      - echo "Rebuilding esbuild for correct platform..."
+      - npm rebuild esbuild
       - echo "Dependencies installed successfully"
     build:
-      - echo "Building application with strict error checking..."
-      - npm run build
+      - echo "Building frontend with Vite..."
+      - npx vite build --mode=production --logLevel=info
+      - echo "Building backend with esbuild..."
+      - npx esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist --log-level=info
     post-build:
       - echo "Verifying build artifacts..."
       - test -d dist && test -f dist/index.js
       - echo "Build completed successfully - ready for deployment"
   env:
-    - name: CI
-      value: "true"
     - name: NPM_CONFIG_UPDATE_NOTIFIER
       value: "false"
 run:
